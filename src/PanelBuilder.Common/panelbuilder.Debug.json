@@ -1,0 +1,7 @@
+﻿{
+  "Version": 1,
+  "Settings": {
+    "BaseApiUrl": "http://localhost:5000"
+  },
+  "SupportedVersions": [ 1, 2 ]
+}

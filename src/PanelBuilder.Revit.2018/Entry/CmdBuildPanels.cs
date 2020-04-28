@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PanelBuilder.Revit
+namespace PanelBuilder.Revit.Entry
 {
-    public class Class1
-    {
-    }
+  public class CmdBuildPanels
+  {
+  }
 }

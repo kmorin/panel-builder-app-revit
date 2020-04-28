@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanelBuilder.Revit.2018", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanelBuilder.UI", "PanelBuilder.UI\PanelBuilder.UI.csproj", "{171CE585-54F2-4A97-BC45-C813B2A3EC12}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AF9357F9-3186-43ED-A577-E6CFBC7BA49A}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanelBuilder.Common", "PanelBuilder.Common\PanelBuilder.Common.csproj", "{FABB6C62-455E-4544-BEA4-C92B549A87A2}"
 EndProject
 Global

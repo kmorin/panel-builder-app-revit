@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PanelBuilder.Common
 {
-    public class Class1
-    {
-    }
+  public interface IApiConnector
+  {
+
+  }
 }
