@@ -3,6 +3,8 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 using PanelBuilder.Common;
 
@@ -10,11 +12,11 @@ namespace PanelBuilder.Revit.Entry
 {
   public class clsApp : IExternalApplication
   {
-    private UIControlledApplication _uiControlledapp;
+    private UIControlledApplication _uiControlledApp;
 
     public Result OnStartup(UIControlledApplication application)
     {
-      _uiControlledapp = application;
+      _uiControlledApp = application;
       return Bootstrap();
     }
 
@@ -57,30 +59,34 @@ namespace PanelBuilder.Revit.Entry
 
       try
       {
-        _uiControlledapp.CreateRibbonTab(tabName);
+        _uiControlledApp.CreateRibbonTab(tabName);
       }
       catch
       {//do nothing, tab exists.
       }
 
       //Panel
-      RibbonPanel panel = _uiControlledapp.CreateRibbonPanel(tabName, panelName);
+      RibbonPanel panel = _uiControlledApp.CreateRibbonPanel(tabName, panelName);
 
       //Buttons
       string dllPath = Assembly.GetExecutingAssembly().Location;
       string m_namespace = typeof(clsApp).Namespace;
 
-      PushButtonData panelBuilderPushButtonData = 
-        GetPushbuttonData(dllPath,
+      PushButtonData panelBuilderPushButtonData =
+        GetPushButtonData(dllPath,
           nameof(CmdBuildPanels),
-          //Text,
-          //"image16.png",
-          //"image32.png,
-          //tootip,
-          //commandAvail)
+          "BuildPanels",
+          "save_16.png",
+          "save_32.png",
+          "access the panel builder",
+          $"{m_namespace}.{nameof(CmdAvail)}"
+        );
+
+      // Add the buttons to the panel
+      panel.AddItem(panelBuilderPushButtonData);
     }
 
-    private PushButtonData GetPushbuttonData(string dllPath,
+    private PushButtonData GetPushButtonData(string dllPath,
       string className,
       string buttonText,
       string image16,
@@ -109,7 +115,36 @@ namespace PanelBuilder.Revit.Entry
       }
       catch (Exception ex)
       {
-        clsUtil.LogEvent(nameof(GetPushbuttonData), ex);
+        clsUtil.LogEvent(nameof(GetPushButtonData), ex);
+      }
+
+      return null;
+    }
+
+    /// <summary>
+    /// Loads the icons
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    private ImageSource LoadPngImgSource(string name)
+    {
+      name = $"PanelBuilder.Revit.img.{name}";
+      try
+      {
+        Assembly m_assembly = Assembly.GetExecutingAssembly();
+        Stream m_icon = m_assembly.GetManifestResourceStream(name);
+        if (m_icon != null)
+        {
+          PngBitmapDecoder m_decoder = new PngBitmapDecoder(
+            m_icon,
+            BitmapCreateOptions.PreservePixelFormat,
+            BitmapCacheOption.Default);
+          return m_decoder.Frames[0];
+        }
+      }
+      catch (Exception ex)
+      {
+        clsUtil.LogEvent(nameof(LoadPngImgSource), ex);
       }
 
       return null;

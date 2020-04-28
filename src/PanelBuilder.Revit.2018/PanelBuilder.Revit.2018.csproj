@@ -57,8 +57,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entry\clsApp.cs" />
-    <Compile Include="Entry\CmdBuildPanels.cs" />
+    <Compile Include="..\shared\Entry\clsApp.cs">
+      <Link>Entry\clsApp.cs</Link>
+    </Compile>
+    <Compile Include="..\shared\Entry\CmdAvail.cs">
+      <Link>Entry\CmdAvail.cs</Link>
+    </Compile>
+    <Compile Include="..\shared\Entry\CmdBuildPanels.cs">
+      <Link>Entry\CmdBuildPanels.cs</Link>
+    </Compile>
+    <Compile Include="..\shared\Services\srvPanelBuilderService.cs">
+      <Link>Services\srvPanelBuilderService.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +83,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\shared\img\save_16.png">
+      <Link>img\save_16.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\shared\img\save_32.png">
+      <Link>img\save_32.png</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
