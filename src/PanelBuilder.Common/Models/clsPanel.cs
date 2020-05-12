@@ -3,7 +3,7 @@ namespace PanelBuilder.Common.Models
 {
   public class clsPanel : IPanel
   {
-    public string PanelName { get ; set ; }
+    public string Name { get ; set ; }
     public string DistSystemName { get ; set ; }
     public string AicRating { get ; set ; }
     public double BusRating { get ; set ; }

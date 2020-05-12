@@ -4,7 +4,7 @@ namespace PanelBuilder.Common.Models
 {
   public interface IPanel
   {
-    string PanelName { get; set; }
+    string Name { get; set; }
     string DistSystemName { get; set; }
     string AicRating { get; set; }
     double BusRating { get; set; }

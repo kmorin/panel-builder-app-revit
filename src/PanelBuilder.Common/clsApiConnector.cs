@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 using PanelBuilder.Common.Models;
 
@@ -8,18 +12,23 @@ namespace PanelBuilder.Common
 {
   public class clsApiConnector : IApiConnector
   {
-    private static string _baseApiUrl;
-    private static string _apiPrefix;
+    private static string _baseApiUrl = "http://mustafar.local:5001";
+    private static string _apiPrefix = "/api";
 
-    public async Task<List<IPanel>> FetchPanelsIndex()
+    public async Task<List<clsPanel>> FetchPanelsIndex()
     {
-      var results = RestResponseGet("/panels");
+      Stream results = await RestResponseGet("/panels");
+      List<clsPanel> panels = await JsonSerializer.DeserializeAsync<List<clsPanel>>(results);
 
-      //TODO: deserialize response;
+      return panels;
 
+    }
 
-      return new List<IPanel>();
-
+    public async Task<clsPanel> FetchPanelById(int id)
+    {
+      Stream result = await RestResponseGet($"/panels/{id}");
+      clsPanel panel = await JsonSerializer.DeserializeAsync<clsPanel>(result);
+      return panel;
     }
 
     #region Private Methods
@@ -29,32 +38,20 @@ namespace PanelBuilder.Common
     /// </summary>
     /// <param name="resource"></param>
     /// <returns></returns>
-    private static async Task<string> RestResponseGet(string resource)
+    private static async Task<Stream> RestResponseGet(string resource)
     {
-      WebRequest client = (HttpWebRequest)WebRequest.Create(_baseApiUrl + _apiPrefix + resource);
-      
-      //Auth'n
-
-      byte[] bca = await GetByteContentArray(client);
-
-      string res = $"{bca, 8}";
-      return res;
+      HttpClient client = new HttpClient();
+      SetSecurityProtocols();
+      client.BaseAddress = new Uri(_baseApiUrl);
+      Stream streamTask = await client.GetStreamAsync( _apiPrefix + resource);
+      return streamTask;
     }
 
-    private static async Task<byte[]> GetByteContentArray(WebRequest client)
+    private static void SetSecurityProtocols()
     {
-      var content = new MemoryStream();
-
-      using (WebResponse response = await client.GetResponseAsync())
-      {
-        using (Stream responseStream = response.GetResponseStream())
-        {
-          await responseStream.CopyToAsync(content);
-        }
-      }
-      return content.ToArray();
+      ServicePointManager.SecurityProtocol =
+        SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
     }
-
     #endregion
   }
 }
